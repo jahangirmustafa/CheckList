@@ -1,0 +1,23 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Checklist.Business/obj
+/Checklist.Business/bin/Debug/netcoreapp2.0
+/Checklist.Data/obj
+/Checklist.Data/bin/Debug/netcoreapp2.0
+/Checklist.WebApi/obj
+/Checklist.WebApi/bin/Debug/netcoreapp2.0
+/Checklist.WebClient/wwwroot
+/Checklist.WebClient/obj
+/Checklist.WebClient/node_modules
+/Checklist.WebClient/dist/out-tsc
+/Checklist.WebClient/bin/Debug/netcoreapp2.0
+/Checklist.Business/bin/Release/netcoreapp2.0
+/Checklist.WebApi/bin
+/Checklist.Data/bin/Release/netcoreapp2.0
+/Checklist.WebClient/bin
+/Checklist.WebClient/wwwroot.zip
+/Checklist.WebApi/Properties/PublishProfiles
+/Checklist.WebClient/Properties/PublishProfiles

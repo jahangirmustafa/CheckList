@@ -1,0 +1,394 @@
+
+<h1 class="page-title">Create - <span class="fw-semi-bold">Checklist</span></h1>
+<section class="widget" widget>
+  <div class="widget-body">
+    <button type="button" class="btn btn-inverse btn-sm mb-xs" (click)="onToBack()">
+      <span class="circle bg-white">
+        <i class="fa fa-arrow-left text-gray"></i>
+      </span> Back
+    </button>
+
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary" (click)="addHeading()">
+        Add Heading
+      </button>&nbsp;
+      <button type="button" class="btn btn-primary" (click)="addQuestion()">
+        Add Question
+      </button>
+      <button type="button" class="btn btn-primary" (click)="showEditChecklist()">
+        Edit Checklist
+      </button>
+    </div>
+
+    <div class="mt">
+      <h5 class="page-title"><span class="fw-semi-bold">Hub Name: </span> <span>{{detail?.hubName}}</span></h5>
+
+      <h3 class="page-title text-center fw-semi-bold">Headings</h3>
+      <table class="table table-striped table-hover" [mfData]="headingData" #mf="mfDataTable" [mfRowsOnPage]="10">
+        <thead>
+          <tr>
+            <th>
+              Id
+            </th>
+            <th>
+              Checklist Id
+            </th>
+            <th class="no-sort d-none d-md-table-cell">
+              Heading
+            </th>
+            <th class="d-none d-md-table-cell">
+              Heading Type
+            </th>
+            <th class="d-none d-md-table-cell">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of mf.data">
+            <td>{{item.id}}</td>
+            <td><span class="d-none d-md-table-cell">{{item.checkListId}}</span></td>
+            <td><span class="d-none d-md-table-cell">{{item.content}}</span></td>
+            <td><span class="d-none d-md-table-cell">{{item.headingType}}</span></td>
+
+            <td>
+              <span class="d-none d-md-table-cell">
+                <button type="button" class="btn btn-primary btn-xs mb-xs" (click)="editHeading(item)">Edit</button> &nbsp;
+              </span>
+            </td>
+
+          </tr>
+          <tr *ngIf="mf.data.length === 0">
+            <td colspan="100">
+              No matches
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="12">
+              <mfBootstrapPaginator></mfBootstrapPaginator>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <h3 class="page-title text-center fw-semi-bold">Questions</h3>
+      <table class="table table-striped table-hover" [mfData]="questionData" #mfq="mfDataTable" [mfRowsOnPage]="10">
+        <thead>
+          <tr>
+            <th>
+              Id
+            </th>
+            <!--<th>
+              Checklist Id
+            </th>-->
+            <th class="no-sort d-none d-md-table-cell">
+              Question
+            </th>
+            <th class="d-none d-md-table-cell">
+              Main Heading
+            </th>
+            <th class="d-none d-md-table-cell">
+              Sub Heading
+            </th>
+            <th class="d-none d-md-table-cell">
+              Sub Of Sub Heading
+            </th>
+            <th class="d-none d-md-table-cell">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of mfq.data">
+            <td>{{item.id}}</td>
+            <!--<td><span class="d-none d-md-table-cell">{{item.checkListId}}</span></td>-->
+            <td><span class="d-none d-md-table-cell">{{item.content}}</span></td>
+            <td><span class="d-none d-md-table-cell">{{item?.heading?.content}}</span></td>
+            <td><span class="d-none d-md-table-cell">{{item?.subHeading?.content}}</span></td>
+            <td><span class="d-none d-md-table-cell">{{item?.subOfSubHeading?.content}}</span></td>
+            <td>
+              <span class="d-none d-md-table-cell">
+                <button type="button" class="btn btn-primary btn-xs mb-xs" (click)="editQuestion(item)">Edit</button> &nbsp;
+              </span>
+
+              <span class="d-none d-md-table-cell">
+                <button type="button" class="btn btn-danger btn-xs mb-xs" (click)="openModal(template, item.id)">Delete</button>
+              </span>
+            </td>
+
+          </tr>
+          <tr *ngIf="mf.data.length === 0">
+            <td colspan="100">
+              No matches
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="12">
+              <mfBootstrapPaginator></mfBootstrapPaginator>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<div bsModal #createStartUp="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header flex-column">
+        <button (click)="closeStartup()" aria-label="Close" class="close ml-auto" type="button">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title text-center fw-bold">Create Checklist</h4>
+      </div>
+      <div class="modal-body bg-gray-lighter">
+        <form [formGroup]="createChecklistForm">
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <ng-select formControlName="userSubAdmin" [items]="subAdminList" required
+                           placeholder="Select Sub-Admin Hub" bindLabel="text" bindValue="id" >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="hubName" class="form-control" placeholder="Hub Name" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="heading" class="form-control" placeholder="Heading" required>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gray" (click)="closeStartup()">Close</button>
+        <button type="button" class="btn btn-success" (click)="createChecklist()" [disabled]="createChecklistForm.invalid">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #editStartUp="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header flex-column">
+        <button (click)="editStartUp.hide()" aria-label="Close" class="close ml-auto" type="button">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title text-center fw-bold">Edit Checklist</h4>
+      </div>
+      <div class="modal-body bg-gray-lighter">
+        <form [formGroup]="editChecklistForm">
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <ng-select formControlName="userSubAdmin" [items]="subAdminList" required
+                           placeholder="Select Sub-Admin Hub" bindLabel="text" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="hubName" class="form-control" placeholder="Hub Name" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-3 col-3">
+              <div class="form-group">
+                <input type="checkbox" formControlName="isActive"> Active
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gray" (click)="editStartUp.hide()">Close</button>
+        <button type="button" class="btn btn-success" (click)="updateChecklist()" [disabled]="editChecklistForm.invalid">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #questionWindow="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header flex-column">
+        <button (click)="questionWindow.hide()" aria-label="Close" class="close ml-auto" type="button">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title text-center fw-bold">{{questionHeading}}</h4>
+      </div>
+      <div class="modal-body bg-gray-lighter">
+        <form [formGroup]="questionForm">
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <ng-select formControlName="mainHeading" [items]="mainHeading" placeholder="Select Main Heading" required bindLabel="text" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <ng-select formControlName="subHeading" [items]="subHeading" placeholder="Select Sub Heading" bindLabel="text" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <ng-select formControlName="subOfSubHeading" [items]="subOfSubHeading" placeholder="Select Sub Of Sub Heading" bindLabel="text" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="content" class="form-control" placeholder="Question" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="headerText" class="form-control" placeholder="Header Text (Optional)" >
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="footerText" class="form-control" placeholder="Footer Text (Optional)" >
+              </div>
+            </div>
+          </div>
+
+          <h6 class="fw-semi-bold">Question Options (Optional)</h6>    
+
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="option1" class="form-control" placeholder="Option 1 (Optional)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="option2" class="form-control" placeholder="Option 2 (Optional)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="option3" class="form-control" placeholder="Option 3 (Optional)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="option4" class="form-control" placeholder="Option 4 (Optional)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="option5" class="form-control" placeholder="Option 5 (Optional)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="option6" class="form-control" placeholder="Option 6 (Optional)">
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gray" (click)="questionWindow.hide()">Close</button>
+        <button type="button" class="btn btn-success" (click)="createQuestion()" [disabled]="questionForm.invalid">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #headingWindow="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header flex-column">
+        <button (click)="headingWindow.hide()" aria-label="Close" class="close ml-auto" type="button">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title text-center fw-bold">{{headerHeading}}</h4>
+      </div>
+      <div class="modal-body bg-gray-lighter">
+        <form [formGroup]="headingForm">
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <ng-select formControlName="headingType" [items]="headingTypes" placeholder="Select Heading Type" required bindLabel="text" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <div class="form-group">
+                <input type="text" formControlName="content" class="form-control" placeholder="Heading" required>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gray" (click)="headingWindow.hide()">Close</button>
+        <button type="button" class="btn btn-success" (click)="createHeading()" [disabled]="headingForm.invalid">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Do you want to confirm?</p>
+    <button type="button" class="btn btn-default" (click)="questionDelete()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="confirmDecline()">No</button>
+  </div>
+</ng-template>

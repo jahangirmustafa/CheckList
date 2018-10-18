@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="dist\**" />
+    <Content Remove="dist\**" />
+    <EmbeddedResource Remove="dist\**" />
+    <None Remove="dist\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\change-password\change-password.module.ts" />
+    <None Remove="src\app\checklist\checklist.module.ts" />
+    <None Remove="src\app\common\models\checklist-answer.model.ts" />
+    <None Remove="src\app\common\models\heading.model.ts" />
+    <None Remove="src\app\common\models\password.model.ts" />
+    <None Remove="src\app\common\models\question.model.ts" />
+    <None Remove="src\app\common\validator\password-validator.ts" />
+    <None Remove="src\app\services\checklist-answer.service.ts" />
+    <None Remove="src\app\services\checklist.service.ts" />
+    <None Remove="src\app\services\result.service.ts" />
+    <None Remove="src\app\user-checklist\user-checklist.module.ts" />
+    <None Remove="src\app\user\user.module.ts" />
+    <None Remove="src\app\view-checklist\view-checklist.module.ts" />
+    <None Remove="wwwroot.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="src\app\change-password\change-password.module.ts" />
+    <TypeScriptCompile Include="src\app\common\models\checklist-answer.model.ts" />
+    <TypeScriptCompile Include="src\app\common\models\heading.model.ts" />
+    <TypeScriptCompile Include="src\app\common\models\password.model.ts" />
+    <TypeScriptCompile Include="src\app\common\models\question.model.ts" />
+    <TypeScriptCompile Include="src\app\common\validator\password-validator.ts" />
+    <TypeScriptCompile Include="src\app\checklist\checklist.module.ts" />
+    <TypeScriptCompile Include="src\app\services\checklist-answer.service.ts" />
+    <TypeScriptCompile Include="src\app\services\checklist.service.ts" />
+    <TypeScriptCompile Include="src\app\services\result.service.ts" />
+    <TypeScriptCompile Include="src\app\user-checklist\user-checklist.module.ts" />
+    <TypeScriptCompile Include="src\app\user\user.module.ts" />
+    <TypeScriptCompile Include="src\app\view-checklist\view-checklist.module.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\app\common\helper\" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,125 @@
+@import "../../scss/helpers";
+
+/***********************************/
+/**          NEWS LIST           **/
+/**********************************/
+
+.news-list {
+  margin-bottom: 0;
+  padding-left: 0;
+
+  li {
+    list-style: none;
+    box-sizing: content-box;
+    border-top: 1px solid $gray-200;
+    padding: 12px;
+    cursor: pointer;
+    @include transition(background-color .2s ease-out);
+
+    &:hover {
+      background: $body-bg-light;
+    }
+
+    &:last-child {
+      margin-bottom: -10px;
+    }
+  }
+
+  img,
+  .icon {
+    float: left;
+    height: 50px;
+    width: 50px;
+  }
+
+  .icon {
+    line-height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 28px;
+
+    .fa {
+      vertical-align: baseline;
+    }
+  }
+
+  .news-item-info {
+    margin-left: 62px; /*50 + 12px padding*/
+  }
+
+  .name {
+    text-transform: uppercase;
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        color: $link-color;
+      }
+    }
+  }
+}
+
+/***********************************/
+/**          SHARES LIST          **/
+/**********************************/
+
+.shares-widget {
+  .list-group {
+    .list-group-item {
+      display: flex;
+      align-items: center;
+      padding: 0.25rem !important;
+    }
+  }
+}
+
+.widget-submenu {
+  position: relative;
+  margin-bottom: 0px !important;
+  padding: 15px 20px;
+  background: #fff;
+  border-radius: 0.25rem;
+  -webkit-box-shadow: 0 0 10px #e8e8e8;
+  box-shadow: 0 0 10px #e8e8e8;
+}
+
+.v-divider {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 1px;
+  height: 100%;
+  border-left: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+
+/*Signature*/
+
+.sig-container {
+  border-style: solid;
+  //border-width: 1px;
+  background-image: url(/assets/img/sign-here.png);
+  background-repeat: no-repeat;
+  background-position-y: 95%;
+  background-color: white;
+  border: 1px solid #ced4da;
+  border-radius: 0.3rem;
+  margin-bottom:30px;
+}
+
+.sig-container canvas {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.sig-container canvas {
+  background-image: url(/assets/img/sign-here.png);
+  background-repeat: no-repeat;
+  background-position-y: 95%;
+}
+
+.sig-container-image {
+  height: 400px;
+  width: 700px;
+}
+

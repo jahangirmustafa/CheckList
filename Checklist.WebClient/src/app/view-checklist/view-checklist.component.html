@@ -1,0 +1,278 @@
+<h1 class="page-title">Detail - <span class="fw-semi-bold">Checklist</span></h1>
+<section class="widget" widget>
+  <div class="widget-body">
+    <button type="button" class="btn btn-inverse btn-sm mb-xs" (click)="onToBack()" style="margin-bottom:20px">
+      <span class="circle bg-white">
+        <i class="fa fa-arrow-left text-gray"></i>
+      </span> Back
+    </button>
+
+    <form [formGroup]="checklistForm" class="form-horizontal form-label-left" role="form">
+      <fieldset>
+        <legend><strong>User</strong> info</legend>
+        <div class="form-group row">
+          <div class="col-md-6 ">
+            <input type="text" formControlName="name" class="form-control" placeholder="Name" required [readonly]="isAdmin">
+          </div>
+          <div class="col-md-6">
+            <ng-select formControlName="employementType" [items]="employementTypeData" placeholder="Select Employement Type" required
+                       bindLabel="text" bindValue="id" (change)="onEmployementChange($event)" [readonly]="isAdmin">
+            </ng-select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6" *ngIf="showCompany">
+            <input type="text" formControlName="companyName" class="form-control" placeholder="Company Name" required [readonly]="isAdmin">
+          </div>
+          <div class="col-md-6" *ngIf="showHRMS">
+            <input type="text" formControlName="HRMS" class="form-control" placeholder="HRMS" required [readonly]="isAdmin">
+          </div>
+          <!--<div class="col-md-6">
+            <input type="text" formControlName="HRMS" class="form-control" placeholder="HRMS" required [readonly]="isAdmin">
+          </div>
+          <div class="col-md-6" *ngIf="showCompany">
+            <input type="text" formControlName="companyName" class="form-control" placeholder="Company Name" required [readonly]="isAdmin">
+          </div>-->
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend style="margin-top:25px"><strong>{{data?.hubName}}</strong></legend>
+        <ng-container *ngFor="let checklist of data?.dataChecklist">          
+          <ng-container *ngFor="let item of checklist?.data">
+            <section  *ngIf="item?.mainHeading != null && item?.subHeading == null && item?.subOfSubHeading == null">
+              <header>
+                <h6>
+                  <span class="fw-semi-bold">{{item?.mainHeading?.content}}</span>
+                </h6>
+              </header>
+              <div class="widget-body p-0">
+                <div class="list-group list-group-lg">
+                  <ng-container *ngFor="let question of item?.questions">
+                    <div class="list-group-item ">
+                      <div>
+                        <small class="text-muted" *ngIf="question?.headerText != null">{{question?.headerText}}</small>
+                        <h6 class="m-0">{{question?.content}}</h6>
+                        <small class="text-muted" *ngIf="question?.footerText != null">{{question?.footerText}}</small>
+                      </div>                     
+
+                      <div class="ml-auto" *ngIf="question?.option1 == null && question?.option2 == null && question?.option3 == null && question?.option4 == null && question?.option5 == null && question?.option6 == null">                       
+                        <input type="radio" value="yes" name="{{question?.id}}" formControlName="{{question?.id}}"> Yes
+                        <input type="radio" value="na" name="{{question?.id}}" formControlName="{{question?.id}}"> N/A
+                      </div>
+                      <div class="ml-auto" *ngIf="question?.option1 != null || question?.option2 != null || question?.option3 != null || question?.option4 != null || question?.option5 != null || question?.option6 != null ">                        
+                        <div><input type="radio" value="option1" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option1 != null "> {{question?.option1}} </div>
+                        <div><input type="radio" value="option2" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option2 != null "> {{question?.option2}} </div>
+                        <div><input type="radio" value="option3" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option3 != null "> {{question?.option3}} </div>
+                        <div><input type="radio" value="option4" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option4 != null "> {{question?.option4}} </div>
+                        <div><input type="radio" value="option5" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option5 != null "> {{question?.option5}} </div>
+                        <div><input type="radio" value="option6" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option6 != null "> {{question?.option6}} </div>
+                      </div>
+
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </section>
+          </ng-container>
+
+          <ng-container *ngFor="let item of checklist?.data; let i = index">
+            <section *ngIf="item?.mainHeading != null && item?.subHeading != null && item.subOfSubHeading == null && i == 0">
+              <legend style="margin-top:15px; color:black;"><strong>{{item?.mainHeading?.content}}</strong></legend>
+              <div class="widget-body p-0">
+                <div class="row">
+                  <div class="col-md-1 ">                    
+                  </div>
+                  <div class="col-md-11">
+                    <header>
+                      <h6>
+                        <span class="fw-semi-bold">{{item?.subHeading?.content}}</span>
+                      </h6>
+                    </header>
+                    <div class="list-group list-group-lg">
+                      <ng-container *ngFor="let question of item?.questions">
+                        <div class="list-group-item ">
+                          <div>
+                            <small class="text-muted" *ngIf="question?.headerText != null">{{question?.headerText}}</small>
+                            <h6 class="m-0">{{question?.content}}</h6>
+                            <small class="text-muted" *ngIf="question?.footerText != null">{{question?.footerText}}</small>
+                          </div>
+                          <div class="ml-auto" *ngIf="question?.option1 == null && question?.option2 == null && question?.option3 == null && question?.option4 == null && question?.option5 == null && question?.option6 == null">
+                            <input type="radio" value="yes" name="{{question?.id}}" formControlName="{{question?.id}}"> Yes
+                            <input type="radio" value="na" name="{{question?.id}}" formControlName="{{question?.id}}"> N/A
+                          </div>
+                          <div class="ml-auto" *ngIf="question?.option1 != null || question?.option2 != null || question?.option3 != null || question?.option4 != null || question?.option5 != null || question?.option6 != null ">
+                            <div><input type="radio" value="option1" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option1 != null "> {{question?.option1}} </div>
+                            <div><input type="radio" value="option2" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option2 != null "> {{question?.option2}} </div>
+                            <div><input type="radio" value="option3" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option3 != null "> {{question?.option3}} </div>
+                            <div><input type="radio" value="option4" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option4 != null "> {{question?.option4}} </div>
+                            <div><input type="radio" value="option5" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option5 != null "> {{question?.option5}} </div>
+                            <div><input type="radio" value="option6" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option6 != null "> {{question?.option6}} </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div *ngIf="item?.mainHeading != null && item?.subHeading != null && item.subOfSubHeading == null && i > 0">
+              <div class="row">
+                <div class="col-md-1">                 
+                </div>
+                <div class="col-md-11">
+                  <header>
+                    <h6>
+                      <span class="fw-semi-bold">{{item?.subHeading?.content}}</span>
+                    </h6>
+                  </header>
+                  <div class="list-group list-group-lg">
+                    <ng-container *ngFor="let question of item?.questions">
+                      <div class="list-group-item ">
+                        <div>
+                          <small class="text-muted" *ngIf="question?.headerText != null">{{question?.headerText}}</small>
+                          <h6 class="m-0">{{question?.content}}</h6>
+                          <small class="text-muted" *ngIf="question?.footerText != null">{{question?.footerText}}</small>
+                        </div>
+                        <div class="ml-auto" *ngIf="question?.option1 == null && question?.option2 == null && question?.option3 == null && question?.option4 == null && question?.option5 == null && question?.option6 == null">
+                          <input type="radio" value="yes" name="{{question?.id}}" formControlName="{{question?.id}}"> Yes
+                          <input type="radio" value="na" name="{{question?.id}}" formControlName="{{question?.id}}"> N/A
+                        </div>
+                        <div class="ml-auto" *ngIf="question?.option1 != null || question?.option2 != null || question?.option3 != null || question?.option4 != null || question?.option5 != null || question?.option6 != null ">
+                          <div><input type="radio" value="option1" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option1 != null "> {{question?.option1}} </div>
+                          <div><input type="radio" value="option2" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option2 != null "> {{question?.option2}} </div>
+                          <div><input type="radio" value="option3" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option3 != null "> {{question?.option3}} </div>
+                          <div><input type="radio" value="option4" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option4 != null "> {{question?.option4}} </div>
+                          <div><input type="radio" value="option5" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option5 != null "> {{question?.option5}} </div>
+                          <div><input type="radio" value="option6" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option6 != null "> {{question?.option6}} </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let item of checklist?.data; let i = index">
+            <section *ngIf="item?.mainHeading != null && item?.subHeading != null && item?.subOfSubHeading != null && i == 0">   
+              <legend style="margin-top:15px; color:black;"><strong>{{item?.mainHeading?.content}}</strong></legend>
+              <div class="widget-body p-0">
+                <div class="row">
+                  <div class="col-md-2 ">                    
+                    <h6>
+                      <span class="fw-semi-bold" >{{item?.subHeading?.content}}</span>
+                    </h6>
+                  </div>
+                  <div class="col-md-10">
+                    <header>
+                      <h6>
+                        <span class="fw-semi-bold">{{item?.subOfSubHeading?.content}}</span>
+                      </h6>
+                    </header>
+                    <div class="list-group list-group-lg">
+                      <ng-container *ngFor="let question of item?.questions">
+                        <div class="list-group-item ">
+                          <div>
+                            <small class="text-muted" *ngIf="question?.headerText != null">{{question?.headerText}}</small>
+                            <h6 class="m-0">{{question?.content}}</h6>
+                            <small class="text-muted" *ngIf="question?.footerText != null">{{question?.footerText}}</small>
+                          </div>
+                          <div class="ml-auto" *ngIf="question?.option1 == null && question?.option2 == null && question?.option3 == null && question?.option4 == null && question?.option5 == null && question?.option6 == null">
+                            <input type="radio" value="yes" name="{{question?.id}}" formControlName="{{question?.id}}"> Yes
+                            <input type="radio" value="na" name="{{question?.id}}" formControlName="{{question?.id}}"> N/A
+                          </div>
+                          <div class="ml-auto" *ngIf="question?.option1 != null || question?.option2 != null || question?.option3 != null || question?.option4 != null || question?.option5 != null || question?.option6 != null ">
+                            <div><input type="radio" value="option1" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option1 != null "> {{question?.option1}} </div>
+                            <div><input type="radio" value="option2" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option2 != null "> {{question?.option2}} </div>
+                            <div><input type="radio" value="option3" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option3 != null "> {{question?.option3}} </div>
+                            <div><input type="radio" value="option4" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option4 != null "> {{question?.option4}} </div>
+                            <div><input type="radio" value="option5" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option5 != null "> {{question?.option5}} </div>
+                            <div><input type="radio" value="option6" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option6 != null "> {{question?.option6}} </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div *ngIf="item?.mainHeading != null && item?.subHeading != null && item?.subOfSubHeading != null && i > 0 ">              
+              <div class="row">
+                <div class="col-md-2">     
+                    <h6>
+                      <span class="fw-semi-bold">{{item?.subHeading?.content}}</span>
+                    </h6>
+                </div>
+                <div class="col-md-10">
+                  <header>
+                    <h6>
+                      <span class="fw-semi-bold">{{item?.subOfSubHeading?.content}}</span>
+                    </h6>
+                  </header>
+                  <div class="list-group list-group-lg">
+                    <ng-container *ngFor="let question of item?.questions">
+                      <div class="list-group-item ">
+                        <div>
+                          <small class="text-muted" *ngIf="question?.headerText != null">{{question?.headerText}}</small>
+                          <h6 class="m-0">{{question?.content}}</h6>
+                          <small class="text-muted" *ngIf="question?.footerText != null">{{question?.footerText}}</small>
+                        </div>
+                        <div class="ml-auto" *ngIf="question?.option1 == null && question?.option2 == null && question?.option3 == null && question?.option4 == null && question?.option5 == null && question?.option6 == null">
+                          <input type="radio" value="yes" name="{{question?.id}}" formControlName="{{question?.id}}"> Yes
+                          <input type="radio" value="na" name="{{question?.id}}" formControlName="{{question?.id}}"> N/A
+                        </div>
+                        <div class="ml-auto" *ngIf="question?.option1 != null || question?.option2 != null || question?.option3 != null || question?.option4 != null || question?.option5 != null || question?.option6 != null ">
+                          <div><input type="radio" value="option1" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option1 != null "> {{question?.option1}} </div>
+                          <div><input type="radio" value="option2" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option2 != null "> {{question?.option2}} </div>
+                          <div><input type="radio" value="option3" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option3 != null "> {{question?.option3}} </div>
+                          <div><input type="radio" value="option4" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option4 != null "> {{question?.option4}} </div>
+                          <div><input type="radio" value="option5" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option5 != null "> {{question?.option5}} </div>
+                          <div><input type="radio" value="option6" name="{{question?.id}}" formControlName="{{question?.id}}" *ngIf="question?.option6 != null "> {{question?.option6}} </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+    </fieldset>
+
+      <div class="form-actions">
+          <h6>I fully understood the subjects covered during safety orientation conducted and will comply with all safety rules and safe work procedures.  </h6>
+          <h6 *ngIf="showContractText">All subcontractor supervisors have to ensure that the staffs are aware and fully understand the content in the indoctrination form.</h6>
+
+          <div class="form-group ">
+            <span class="fw-semi-bold">Submit Date:</span> {{dateNow | date: 'dd/MM/yyyy hh:mm' }}
+          </div>
+
+          <div class="form-group ">
+            <div>
+              <textarea rows="3" formControlName="remarks" [readonly]="isAdmin" class="autogrow form-control transition-height" autosize placeholder="Remarks - If any"></textarea>
+            </div>
+          </div>
+
+          <div class="sig-container" #sigContainer>
+            <div style="margin: 5px;">
+              <button type="button" class="btn btn-inverse btn-sm" (click)="sigs.first.clear()" [disabled]="!checklistForm.controls.signature.valid && isAdmin">Clear Signature</button>
+            </div>
+            <div >
+              <signature-field formControlName="signature"></signature-field>
+            </div>
+          </div>
+
+          <div class="btn-block text-center">
+            <button type="button" class="btn btn-inverse" (click)="onToBack()">Cancel</button>
+            <button type="submit" class="btn btn-primary" *ngIf="!isAdmin" (click)="postChecklist()" [disabled]="checklistForm.invalid">Save Changes</button>           
+          </div>
+        </div>
+</form>
+  </div>
+</section>
+
+
+

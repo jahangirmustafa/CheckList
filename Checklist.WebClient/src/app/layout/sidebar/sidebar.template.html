@@ -1,0 +1,57 @@
+<div class="js-sidebar-content">
+  <header class="logo d-none d-md-block">
+    <a href="index.html">{{config.name}}</a>
+  </header>
+  <div class="sidebar-status d-md-none dropdown" dropdown [autoClose]="false" (isOpenChange)="toggleSidebarOverflow($event)" placement="bottom left">
+    <a [routerLink]="" class="dropdown-toggle" dropdownToggle>
+      &nbsp;
+      {{currentUser.firstName}}&nbsp;<strong>{{currentUser.lastName}}</strong>
+    </a>
+  </div>
+  <!-- main notification links are placed inside of .sidebar-nav -->
+  <ul class="sidebar-nav">
+    <li *ngIf="currentUser.role == 'Admin' || currentUser.role == 'SubAdmin'">
+      <a [routerLink]=" ['dashboard'] ">
+        <span class="icon">
+          <i class="fa fa-home"></i>
+        </span>
+        Dashboard
+      </a>
+    </li>
+    <li *ngIf="currentUser.role == 'Admin'">
+      <a [routerLink]=" ['manage-checklist'] ">
+        <span class="icon">
+          <i class="fa fa-th-list"></i>
+        </span>
+        Manage Checklist
+      </a>
+    </li>
+    <li *ngIf="currentUser.role == 'Admin'">
+      <a [routerLink]=" ['manage-user'] ">
+        <span class="icon">
+          <i class="fa fa-user"></i>
+        </span>
+        Manage Users
+      </a>
+    </li>
+
+    <li *ngIf="currentUser.role == 'User'">
+      <a [routerLink]=" ['checklist'] ">
+        <span class="icon">
+          <i class="fa fa-th-list"></i>
+        </span>
+        View Checklist
+      </a>
+    </li>
+
+    <li *ngIf="configFn.isScreen('xs') || configFn.isScreen('sm')">
+      <a (click)="logout()">
+        <span class="icon">
+          <i class="fa fa-sign-out"></i>
+        </span>
+        Logout
+      </a>
+    </li>
+  </ul>
+  
+</div>

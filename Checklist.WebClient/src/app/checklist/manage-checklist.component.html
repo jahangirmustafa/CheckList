@@ -1,0 +1,59 @@
+<div *ngIf="showChecklist">
+<h1 class="page-title">Manage - <span class="fw-semi-bold">Checklist</span></h1>
+<section class="widget" widget>
+  <div class="widget-body">
+    <button type="button" class="btn btn-primary pull-right" (click)="changeChecklistComponent('create')">Create Checklist</button>
+    <div class="mt">
+      <table class="table table-striped table-hover" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="10">
+        <thead>
+          <tr>
+            <th>
+              Id
+            </th>
+            <th>
+              Hub Name
+            </th>
+            <th class="no-sort d-none d-md-table-cell">
+             Created Date
+            </th>            
+            <th class="d-none d-md-table-cell">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of mf.data">
+            <td>{{item.id}}</td>
+            <td><span class="d-none d-md-table-cell">{{item.hubName}}</span></td>
+            <td><span class="d-none d-md-table-cell">{{item.createdOn | date}}</span></td>           
+            <td>
+              <span class="d-none d-md-table-cell">
+                <button type="button" class="btn btn-primary btn-xs mb-xs" (click)="editChecklist(item)">Edit</button> &nbsp;
+              </span>
+
+              <!--<span class="d-none d-md-table-cell">
+                <button type="button" class="btn btn-danger btn-xs mb-xs" (click)="confirmDelete()">Delete</button>
+              </span>-->
+            </td>
+
+          </tr>
+          <tr *ngIf="mf.data.length === 0">
+            <td colspan="100">
+              No matches
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="12">
+              <mfBootstrapPaginator></mfBootstrapPaginator>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+</div>
+
+<create-checklist *ngIf="showCreateCheck" [detail]="createDetail" (backToCheckList)="changeChecklistComponent('checkList')"></create-checklist>

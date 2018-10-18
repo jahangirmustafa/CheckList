@@ -1,0 +1,99 @@
+<div [hidden]="!showUserChecklist">
+  <h1 class="page-title">Checklist - <span class="fw-semi-bold">Result</span></h1>
+  <section class="widget" widget>
+    <div class="widget-body">
+      <form [formGroup]="filterForm">
+        <div class="form-group row" >
+          <div class="col-md-3" *ngIf="currentUser.role == 'Admin'">
+            <ng-select formControlName="hubName" [items]="hubData" placeholder="Select Hub"
+                       bindLabel="text" bindValue="id">
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <ng-select formControlName="year" [items]="yearData" placeholder="Select Year"
+                       bindLabel="text" bindValue="id">
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <ng-select formControlName="employementType" [items]="employementTypeData" placeholder="Select Employement Type"
+                       bindLabel="text" bindValue="id">
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <button type="button" class="btn btn-primary" (click)="filter()">Filter</button>
+          </div>
+        </div>       
+      </form>
+
+      <div class="mt">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>
+                Id
+              </th>
+
+              <th>
+                Name
+              </th>
+              <th>
+                Company Name
+              </th>
+              <th>
+                HRMS
+              </th>
+              <th>
+                Submit On
+              </th>
+              <th>
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data">
+              <td><span>{{item?.id}}</span></td>
+              <td><span>{{item?.name}}</span></td>
+              <td><span>{{item?.companyName}}</span></td>
+              <td><span>{{item?.hrms}}</span></td>
+              <td><span>{{item?.submitOn | date: 'dd/MM/yyyy'}}</span></td>
+              <td>
+                <span class="d-none d-md-table-cell">
+                  <button type="button" class="btn btn-primary btn-xs mb-xs" (click)="openViewChecklist(item)">View</button> &nbsp;
+                </span>
+                <span class="d-none d-md-table-cell">
+                  <button type="button" class="btn btn-danger btn-xs mb-xs" (click)="confirmDelete(item)">Delete</button> &nbsp;
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<view-checklist *ngIf="showViewChecklist" [detail]="checklistDetail" (backToCheckList)="changeChecklistComponent('userCheckList')"></view-checklist>
+
+
+
+<div bsModal #confirmWindow="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header flex-column">
+        <button (click)="confirmWindow.hide()" aria-label="Close" class="close ml-auto" type="button">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title text-center fw-bold">Confirm</h4>
+      </div>
+
+      <div class="modal-body bg-gray-lighter">
+        {{deleteMessage}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gray" (click)="confirmWindow.hide()">No</button>
+        <button type="button" class="btn btn-danger" (click)="deleteResult()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
